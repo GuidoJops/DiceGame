@@ -31,8 +31,6 @@ public class GameController {
 	public ResponseEntity<String> deleteGames(@PathVariable String id) {
 		gameService.deleteAllGamesByPlayerId(id);
         return new ResponseEntity<>("Games removed from Player with id: " + id, HttpStatus.OK);
-
-
 	}
 	
 

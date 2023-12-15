@@ -35,6 +35,13 @@ public class GameServiceImpl implements IGameService {
 		return entityDtoMapper.toGameDto(game);
 	}
 
+	@Override
+	public void deleteAllGamesByPlayerId(String id) {
+		Player player = getPlayer(id);
+		player.resetPlayer();
+		playerRepository.save(player);
+	}
+
 	private Game createNewGame(Player player) {
 		Game game = new Game();
 		player.getGames().add(game);
@@ -52,13 +59,6 @@ public class GameServiceImpl implements IGameService {
 		Optional<Player> oPlayer = playerRepository.findById(id);
 		return oPlayer.orElseThrow(() -> new PlayerNotFoundException("Player not found with ID: " + id));
 
-	}
-
-	@Override
-	public void deleteAllGamesByPlayerId(String id) {
-		Player player = getPlayer(id);
-		player.resetPlayer();
-		playerRepository.save(player);
 	}
 
 }
