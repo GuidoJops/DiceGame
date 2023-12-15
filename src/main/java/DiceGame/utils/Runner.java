@@ -1,10 +1,10 @@
 package DiceGame.utils;
 
-import DiceGame.model.repository.IRoleRepository;
+import DiceGame.repository.IRoleRepository;
 import DiceGame.model.domain.ERole;
 import DiceGame.model.domain.Player;
 import DiceGame.model.domain.Role;
-import DiceGame.model.repository.IPlayerRepository;
+import DiceGame.repository.IPlayerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

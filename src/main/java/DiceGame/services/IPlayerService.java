@@ -1,14 +1,14 @@
-package DiceGame.model.services;
+package DiceGame.services;
 
 import java.util.List;
 import java.util.Map;
 import DiceGame.model.domain.Game;
-import DiceGame.model.dto.AuthRequest;
+import DiceGame.model.dto.AuthLoginRequest;
 import DiceGame.model.dto.PlayerDto;
 
 public interface IPlayerService {
 	List<PlayerDto> getAllPlayers();
-	PlayerDto createPlayer(AuthRequest authRequest);
+	PlayerDto createPlayer(AuthLoginRequest authLoginRequest);
 	Map<String, Double> getAllPlayersRanking();
 	PlayerDto getPlayerWinner();
 	PlayerDto getPlayerLoser();

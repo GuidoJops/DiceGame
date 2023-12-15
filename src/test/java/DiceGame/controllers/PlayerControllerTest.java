@@ -1,6 +1,6 @@
 package DiceGame.controllers;
 
-import DiceGame.model.services.IPlayerService;
+import DiceGame.services.IPlayerService;
 import DiceGame.model.domain.Game;
 import DiceGame.model.dto.PlayerDto;
 import org.junit.jupiter.api.Test;

@@ -20,16 +20,21 @@ public class Player {
 	
 	@Id
 	private String id;
-	@NotBlank(message="El nombre del Jugador no puede estar vacio")
+
+	@NotBlank(message="El nombre del Jugador no puede estar vacío")
 	private String name;
+
 	//Se usa e-mail como 'userName'
-	@Email(message = "El nombre de usuario debe ser formato e-mail")
+	@Email(message = "El nombre de usuario debe ser formato e-mail. 'xx@mail.com'")
 	@NotBlank (message = "El nombre de usuario no puede estar vacío")
 	private String userName;
+
 	@JsonIgnore
 	@NotBlank (message = "La contraseña no puede estar vacía")
 	private String password;
+
 	private Date registDate;
+
 	private double winSuccess;
 	private int victories;
 	private List<Game> games;
@@ -50,10 +55,10 @@ public class Player {
 	
 
 	public void updateWinSuccess() {
-		setWinSuccess(winSuccesCalculator());
+		setWinSuccess(winSuccessCalculator());
 	}
 	
-	public double winSuccesCalculator() {
+	public double winSuccessCalculator() {
 		int totalGames = games.size() + 1; //Se suma 1 para tomar en cuenta la partida actual
 		double result = 0;
 		

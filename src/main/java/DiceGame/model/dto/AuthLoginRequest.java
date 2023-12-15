@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AuthRequest {
+public class AuthLoginRequest {
 
     private String name = "NoNamePlayer"; //Valor por defecto;
 

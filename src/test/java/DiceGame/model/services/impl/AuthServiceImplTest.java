@@ -1,10 +1,11 @@
 package DiceGame.model.services.impl;
 
-import DiceGame.model.dto.AuthResponse;
-import DiceGame.model.services.IPlayerService;
-import DiceGame.model.dto.AuthRequest;
+import DiceGame.model.dto.LoginResponse;
+import DiceGame.services.IPlayerService;
+import DiceGame.model.dto.AuthLoginRequest;
 import DiceGame.model.dto.PlayerDto;
 import DiceGame.security.jwt.JwtUtils;
+import DiceGame.services.impl.AuthServiceImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,11 +30,11 @@ class AuthServiceImplTest {
 
     @InjectMocks private AuthServiceImpl authServiceImpl;
 
-    private AuthRequest authRequest;
+    private AuthLoginRequest authLoginRequest;
 
     @BeforeEach
     void setUp(){
-        authRequest = AuthRequest.builder()
+        authLoginRequest = AuthLoginRequest.builder()
                 .name("testname")
                 .userName("test@gmail.com")
                 .password("testpswd")
@@ -45,30 +46,30 @@ class AuthServiceImplTest {
         //given
         PlayerDto playerDto = PlayerDto.builder()
                 .id("id")
-                .name(authRequest.getName())
-                .userName(authRequest.getUserName())
+                .name(authLoginRequest.getName())
+                .userName(authLoginRequest.getUserName())
                 .registDate(new Date())
                 .winSuccess(0)
                 .build();
 
-        Mockito.when(playerService.playerExist(authRequest.getUserName())).thenReturn(false);
-        Mockito.when(playerService.createPlayer(authRequest)).thenReturn(playerDto);
+        Mockito.when(playerService.playerExist(authLoginRequest.getUserName())).thenReturn(false);
+        Mockito.when(playerService.createPlayer(authLoginRequest)).thenReturn(playerDto);
 
         //when
-        PlayerDto result = authServiceImpl.registerUser(authRequest);
+        PlayerDto result = authServiceImpl.registerUser(authLoginRequest);
 
         //then
         Assertions.assertThat(result).isNotNull();
-        Assertions.assertThat(result.getUserName()).isEqualTo(authRequest.getUserName());
+        Assertions.assertThat(result.getUserName()).isEqualTo(authLoginRequest.getUserName());
     }
 
     @Test
     void shouldNotRegisterUser_UserNameTaken(){
         //given
-        Mockito.when(playerService.playerExist(authRequest.getUserName())).thenReturn(true);
+        Mockito.when(playerService.playerExist(authLoginRequest.getUserName())).thenReturn(true);
 
         //when
-        PlayerDto result = authServiceImpl.registerUser(authRequest);
+        PlayerDto result = authServiceImpl.registerUser(authLoginRequest);
 
         //then
         Assertions.assertThat(result).isNull();
@@ -79,8 +80,8 @@ class AuthServiceImplTest {
     void shouldLoginUser(){
         //given
         Authentication authentication = new UsernamePasswordAuthenticationToken(
-                authRequest.getUserName(),
-                authRequest.getPassword());
+                authLoginRequest.getUserName(),
+                authLoginRequest.getPassword());
 
         String token = "testToken";
 
@@ -89,7 +90,7 @@ class AuthServiceImplTest {
         Mockito.when(jwtUtils.generateToken(authentication)).thenReturn(token);
 
         //when
-       AuthResponse result = authServiceImpl.loginUser(authRequest);
+       LoginResponse result = authServiceImpl.loginUser(authLoginRequest);
 
         //then
         Assertions.assertThat(result).isNotNull();
@@ -101,15 +102,15 @@ class AuthServiceImplTest {
     void shouldNotLoginUser_throwsException(){
         //given
         Authentication authentication = new UsernamePasswordAuthenticationToken(
-                authRequest.getUserName(),
-                authRequest.getPassword());
+                authLoginRequest.getUserName(),
+                authLoginRequest.getPassword());
         String token = "testToken";
 
         Mockito.when(authenticationManager.authenticate(Mockito.any(Authentication.class)))
                 .thenThrow(new AuthenticationException("Credenciales incorrectas"){});
 
         //when
-        AuthResponse result = authServiceImpl.loginUser(authRequest);
+        LoginResponse result = authServiceImpl.loginUser(authLoginRequest);
 
         //then
         Assertions.assertThat(result).isNull();

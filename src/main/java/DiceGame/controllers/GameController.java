@@ -1,7 +1,7 @@
 package DiceGame.controllers;
 
 import DiceGame.model.dto.GameDto;
-import DiceGame.model.services.IGameService;
+import DiceGame.services.IGameService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,21 +21,16 @@ public class GameController {
 
 	@PostMapping("players/{id}/games")
 	@PreAuthorize("#id == principal.id")
-	public ResponseEntity<?> playGame(@PathVariable String id) {
+	public ResponseEntity<GameDto> playGame(@PathVariable String id) {
 		GameDto gameDto = gameService.newGame(id);
-		if (gameDto==null) {
-            return new ResponseEntity<>("NO hay jugadores con el id: "+id, HttpStatus.NOT_FOUND);
-		}
         return new ResponseEntity<>(gameDto, HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping("players/{id}/games")
 	@PreAuthorize("hasRole ('ADMIN')")
 	public ResponseEntity<String> deleteGames(@PathVariable String id) {
-		if (!gameService.deleteAllGamesByPlayerId(id)) {
-            return new ResponseEntity<>("NO hay jugadores con el id: "+id, HttpStatus.NOT_FOUND);
-		}
-        return new ResponseEntity<>("Se han borrado todas las partidas del Jugador con id: " + id, HttpStatus.OK);
+		gameService.deleteAllGamesByPlayerId(id);
+        return new ResponseEntity<>("Games removed from Player with id: " + id, HttpStatus.OK);
 
 
 	}

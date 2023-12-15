@@ -1,13 +1,14 @@
 package DiceGame.model.services.impl;
 
 import DiceGame.model.domain.Game;
-import DiceGame.model.repository.IPlayerRepository;
-import DiceGame.model.repository.IRoleRepository;
+import DiceGame.repository.IPlayerRepository;
+import DiceGame.repository.IRoleRepository;
+import DiceGame.services.impl.PlayerServiceImpl;
 import DiceGame.utils.mapper.EntityDtoMapper;
 import DiceGame.model.domain.ERole;
 import DiceGame.model.domain.Player;
 import DiceGame.model.domain.Role;
-import DiceGame.model.dto.AuthRequest;
+import DiceGame.model.dto.AuthLoginRequest;
 import DiceGame.model.dto.PlayerDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -35,7 +36,7 @@ class PlayerServiceImplTest {
     @Test
     void shouldCreatePlayer() {
         //given
-        AuthRequest authRequest = AuthRequest.builder()
+        AuthLoginRequest authLoginRequest = AuthLoginRequest.builder()
                 .name("testName")
                 .userName("test@gmail.com")
                 .password("testpswd")
@@ -57,12 +58,12 @@ class PlayerServiceImplTest {
 
 
         //when
-        PlayerDto result = playerService.createPlayer(authRequest);
+        PlayerDto result = playerService.createPlayer(authLoginRequest);
 
         //then
         Mockito.verify(playerRepository, times(1)).save(Mockito.any(Player.class));
         Assertions.assertThat(result).isNotNull();
-        Assertions.assertThat(result.getName()).isEqualTo(authRequest.getName());
+        Assertions.assertThat(result.getName()).isEqualTo(authLoginRequest.getName());
 
     }
 

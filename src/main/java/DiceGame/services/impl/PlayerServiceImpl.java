@@ -1,16 +1,16 @@
-package DiceGame.model.services.impl;
+package DiceGame.services.impl;
 
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import DiceGame.model.repository.IPlayerRepository;
-import DiceGame.model.repository.IRoleRepository;
-import DiceGame.model.services.IPlayerService;
+import DiceGame.repository.IPlayerRepository;
+import DiceGame.repository.IRoleRepository;
+import DiceGame.services.IPlayerService;
 import DiceGame.utils.mapper.EntityDtoMapper;
 import DiceGame.model.domain.ERole;
 import DiceGame.model.domain.Role;
-import DiceGame.model.dto.AuthRequest;
+import DiceGame.model.dto.AuthLoginRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,10 +39,10 @@ public class PlayerServiceImpl implements IPlayerService {
 
 
 	@Override
-	public PlayerDto createPlayer(AuthRequest authRequest) {
-		Player player = new Player(authRequest.getName(),
-				authRequest.getUserName(),
-				passwordEncoder.encode(authRequest.getPassword()));
+	public PlayerDto createPlayer(AuthLoginRequest authLoginRequest) {
+		Player player = new Player(authLoginRequest.getName(),
+				authLoginRequest.getUserName(),
+				passwordEncoder.encode(authLoginRequest.getPassword()));
 		log.info("Player Creado");
 		return entityDtoMapper.toPlayerDto(playerRepository.save(player));
 	}

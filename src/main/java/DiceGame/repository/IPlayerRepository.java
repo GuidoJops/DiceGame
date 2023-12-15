@@ -1,4 +1,4 @@
-package DiceGame.model.repository;
+package DiceGame.repository;
 
 import java.util.Optional;
 

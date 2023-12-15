@@ -1,7 +1,7 @@
 package DiceGame.security;
 
 import DiceGame.model.domain.Player;
-import DiceGame.model.repository.IPlayerRepository;
+import DiceGame.repository.IPlayerRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

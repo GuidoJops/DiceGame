@@ -1,4 +1,4 @@
-package DiceGame.model.repository;
+package DiceGame.repository;
 
 import DiceGame.model.domain.ERole;
 import DiceGame.model.domain.Role;

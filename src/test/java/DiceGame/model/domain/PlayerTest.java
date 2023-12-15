@@ -43,7 +43,7 @@ class PlayerTest {
                 .build();
 
         //when
-        double result = player.winSuccesCalculator();
+        double result = player.winSuccessCalculator();
 
         //then
         Assertions.assertThat(result).isEqualTo(33.3);

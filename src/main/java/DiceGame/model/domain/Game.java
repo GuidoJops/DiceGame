@@ -5,8 +5,7 @@ import lombok.*;
 
 @Getter 
 @Setter
-@Builder
-@AllArgsConstructor
+//@Builder
 @ToString
 public class Game {
 	
@@ -17,13 +16,10 @@ public class Game {
 	public Game() {
 		diceA = (int)(Math.random()*6)+1;
 		diceB = (int)(Math.random()*6)+1;
-		win = winLose();
+		win = isWin();
 	}
 
-	public boolean winLose() {
+	public boolean isWin() {
 		return diceA + diceB == 7;
 	}
-	
-	
-
 }
