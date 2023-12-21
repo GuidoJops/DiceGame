@@ -32,14 +32,14 @@ public class AuthServiceImpl implements IAuthService {
     @Override
     public PlayerDto registerUser(AuthLoginRequest authLoginRequest) throws UserNameDuplicatedException {
         if (playerService.playerExist(authLoginRequest.getUserName())) {
-            throw new UserNameDuplicatedException("Username already taken");
+            throw new UserNameDuplicatedException("Username already taken.");
         }
         log.info("User '{}' registered", authLoginRequest.getUserName());
         return playerService.createPlayer(authLoginRequest);
     }
 
     @Override
-    public LoginResponse loginUser(AuthLoginRequest authLoginRequest) throws AuthenticationException {
+    public LoginResponse loginUser(AuthLoginRequest authLoginRequest) {
         Authentication auth = getAuthentication(authLoginRequest);
         SecurityContextHolder.getContext().setAuthentication(auth);
         String token = jwtUtils.generateToken(auth);
@@ -48,11 +48,11 @@ public class AuthServiceImpl implements IAuthService {
         loginResponse.setUserName(authLoginRequest.getUserName());
         loginResponse.setToken(token);
 
-        log.info("User '{}' logged", authLoginRequest.getUserName());
+        log.info("User '{}' logged in.", authLoginRequest.getUserName());
         return loginResponse;
     }
 
-    private Authentication getAuthentication(AuthLoginRequest authLoginRequest) throws AuthenticationException {
+    private Authentication getAuthentication(AuthLoginRequest authLoginRequest) {
         return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                authLoginRequest.getUserName(),
                authLoginRequest.getPassword()

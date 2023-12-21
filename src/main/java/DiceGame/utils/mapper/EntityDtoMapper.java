@@ -5,9 +5,7 @@ import DiceGame.model.domain.Game;
 import DiceGame.model.domain.Player;
 import DiceGame.model.dto.GameDto;
 import DiceGame.model.dto.PlayerDto;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Component
 public class EntityDtoMapper {
 
@@ -22,7 +20,6 @@ public class EntityDtoMapper {
 		playerDto.setWinSuccess(player.getWinSuccess());
 
 		return playerDto;
-
 	}
 
 	// GAME

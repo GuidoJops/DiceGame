@@ -2,6 +2,7 @@ package DiceGame.controllers;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import DiceGame.services.IPlayerService;
 import org.springframework.http.HttpStatus;
@@ -31,92 +32,79 @@ public class PlayerController {
 
 	@PreAuthorize("#id == principal.id or hasRole('ADMIN')")
 	@PutMapping("/{id}")
-	public ResponseEntity<?> changePayerName(@PathVariable String id, @RequestParam String name) {
-		PlayerDto _playerDto = playerService.changePlayerName(id, name);
-		if(_playerDto==null) {
-			return new ResponseEntity<>("EL Jugador que se quiere modificar NO existe, revisa el ID.", HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(_playerDto, HttpStatus.OK);
+	public ResponseEntity<PlayerDto> changePayerName(@PathVariable String id, @RequestParam String name) {
+		PlayerDto playerDto = playerService.changePlayerName(id, name);
+		return new ResponseEntity<>(playerDto, HttpStatus.OK);
 	}
 
 	@PreAuthorize("#id == principal.id or hasRole('ADMIN')")
 	@GetMapping("/{id}/games")
-	public ResponseEntity<?> getPlayerGames(@PathVariable String id) {
+	public ResponseEntity<List <Game>> getPlayerGames(@PathVariable String id) {
 		List <Game> games =	playerService.getGamesByPlayerId(id);
-		if (games==null) {
-            return new ResponseEntity<>("NO hay jugadores con el id: "+id, HttpStatus.NOT_FOUND);
-            
-		} else if (games.isEmpty()) {
-			log.info("El jugador con id: "+id+" no tiene juegos");
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-
+		if (games.isEmpty()) {
+			log.info("No games for player with id: " + id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
         return new ResponseEntity<>(games, HttpStatus.OK);
 	}
 
 	@GetMapping("/ranking")
-	public ResponseEntity<?> getPlayersRanking(){
+	public ResponseEntity<Map<String, Double>> getPlayersRanking(){
 		Map<String, Double> playersRanking = playerService.getAllPlayersRanking();
 		if (playersRanking.isEmpty()) {
-			log.info("No hay Jugadores en el sistema.");
-			return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+			log.info("No Players in the system");
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<>(playersRanking, HttpStatus.OK);
 	}
 	
 	@GetMapping("/ranking/winner")
-	public ResponseEntity<?> getWinnerPlayer(){
-		PlayerDto playerDto = playerService.getPlayerWinner();
-
-		if (playerDto==null) {
-			log.info("No hay Jugadores en el sistema.");
-			return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+	public ResponseEntity<PlayerDto> getWinner(){
+		Optional<PlayerDto> winnerPlayer = playerService.getWinnerOrLoserPlayer(true);
+		if (winnerPlayer.isEmpty()) {
+			log.info("No Players in the system");
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
-		return new ResponseEntity<>(playerDto, HttpStatus.OK);
+		return new ResponseEntity<>(winnerPlayer.get(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/ranking/loser")
-	public ResponseEntity<?> getLoserPlayer(){
-		PlayerDto playerDto = playerService.getPlayerLoser();
-
-		if (playerDto==null) {
-			log.info("No hay Jugadores en el sistema.");
-			return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+	public ResponseEntity<PlayerDto> getLoser(){
+		Optional<PlayerDto> loserPlayer = playerService.getWinnerOrLoserPlayer(false);
+		if (loserPlayer.isEmpty()) {
+			log.info("No Players in the system");
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
-		return new ResponseEntity<>(playerDto, HttpStatus.OK);
+		return new ResponseEntity<>(loserPlayer.get(), HttpStatus.OK);
 	}
 
-/*--Funcionalidades sólo para Admin--*/
+	// Admin Only
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("")
 	public ResponseEntity<List<PlayerDto>> listPlayers(){
 		List<PlayerDto> playersDto = playerService.getAllPlayers();
 		if (playersDto.isEmpty()) {
-
-			log.info("No hay Jugadores en el sistema.");
-			return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+			log.info("No Players in the system");
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<>(playersDto, HttpStatus.OK);
 	}
 
 	@PostMapping("/add-admin-role")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<?> addAdminRoleToUser(@RequestParam String id) {
+	public ResponseEntity<PlayerDto> addAdminRoleToUser(@RequestParam String id) {
 		PlayerDto playerDto = playerService.addAdminRole(id);
-		if(playerDto == null){
-			return new ResponseEntity<>("NO hay jugadores con id: "+id, HttpStatus.NOT_FOUND);
-		}
-		log.info("Admin Role agregado para usuario {} ", playerDto.getUserName());
+		log.info("Admin Role added to user {} ", playerDto.getUserName());
 		return new ResponseEntity<>(playerDto, HttpStatus.OK);
 	}
 
 	@GetMapping("/all-admins")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<?> listAdmins() {
+	public ResponseEntity<List<PlayerDto>> listAdmins() {
 		List<PlayerDto> playersDto = playerService.getAllAdmins();
 		if (playersDto.isEmpty()) {
-			log.info("No hay Admins en el sistema.");
-			return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+			log.info("No Admins in the system.");
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<>(playersDto, HttpStatus.OK);
 

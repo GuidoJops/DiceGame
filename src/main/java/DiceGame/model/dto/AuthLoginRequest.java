@@ -11,13 +11,13 @@ import lombok.*;
 @Builder
 public class AuthLoginRequest {
 
-    private String name = "NoNamePlayer"; //Valor por defecto;
+    private String name = "NoNamePlayer"; // Default name
 
-    @Email (message = "El nombre de usuario debe ser formato e-mail")
-    @NotBlank (message = "El nombre de usuario no puede estar vacío")
+    @Email(message = "Username must be an e-mail format. 'xx@mail.com'")
+    @NotBlank (message = "Username must be at least one character.")
     private String userName;
 
-    @NotBlank (message = "La contraseña no puede estar vacía")
+    @NotBlank (message = "Password must be at least one character.")
     private String password;
 
 

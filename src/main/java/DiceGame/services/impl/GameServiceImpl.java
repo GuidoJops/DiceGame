@@ -9,6 +9,7 @@ import DiceGame.model.dto.GameDto;
 import DiceGame.model.exceptions.PlayerNotFoundException;
 import DiceGame.repository.IPlayerRepository;
 import DiceGame.services.IGameService;
+import DiceGame.services.IPlayerService;
 import DiceGame.utils.mapper.EntityDtoMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,29 +18,29 @@ import org.springframework.stereotype.Service;
 @Service
 public class GameServiceImpl implements IGameService {
 
-	private final IPlayerRepository playerRepository;
+	private final IPlayerService playerService;
 	private final EntityDtoMapper entityDtoMapper;
 
-	public GameServiceImpl(IPlayerRepository playerRepository, EntityDtoMapper entityDtoMapper) {
-		this.playerRepository = playerRepository;
+	public GameServiceImpl(IPlayerService playerService, EntityDtoMapper entityDtoMapper) {
+		this.playerService = playerService;
 		this.entityDtoMapper = entityDtoMapper;
 	}
 
 	@Override
-	public GameDto newGame(String id) throws PlayerNotFoundException {
-		Player player = getPlayer(id);
+	public GameDto newGame(String id) {
+		Player player = playerService.getPlayerById(id);
 		Game game = createNewGame(player);
 		updateGameVictories(player, game);
-		playerRepository.save(player);
+		playerService.savePlayer(player);
 		log.info("User {} played a game.", player.getUserName());
 		return entityDtoMapper.toGameDto(game);
 	}
 
 	@Override
 	public void deleteAllGamesByPlayerId(String id) {
-		Player player = getPlayer(id);
+		Player player = playerService.getPlayerById(id);
 		player.resetPlayer();
-		playerRepository.save(player);
+		playerService.savePlayer(player);
 	}
 
 	private Game createNewGame(Player player) {
@@ -53,12 +54,6 @@ public class GameServiceImpl implements IGameService {
 			player.setVictories(player.getVictories() + 1);
 		}
 		player.updateWinSuccess();
-	}
-
-	private Player getPlayer(String id) throws PlayerNotFoundException {
-		Optional<Player> oPlayer = playerRepository.findById(id);
-		return oPlayer.orElseThrow(() -> new PlayerNotFoundException("Player not found with ID: " + id));
-
 	}
 
 }

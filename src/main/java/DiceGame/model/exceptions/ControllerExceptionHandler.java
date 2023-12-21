@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.management.relation.RoleNotFoundException;
+
 @RestControllerAdvice
 public class ControllerExceptionHandler {
 
@@ -26,4 +28,5 @@ public class ControllerExceptionHandler {
     public String PlayerNotFoundExceptionHandler (PlayerNotFoundException exception) {
         return exception.getMessage();
     }
+
 }

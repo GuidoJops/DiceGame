@@ -4,7 +4,6 @@ import DiceGame.model.dto.LoginResponse;
 import DiceGame.model.dto.AuthLoginRequest;
 import DiceGame.services.IAuthService;
 import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +28,6 @@ public class AuthController {
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody AuthLoginRequest authLoginRequest) {
         LoginResponse loginResponse = authService.loginUser(authLoginRequest);
         return new ResponseEntity<>(loginResponse, HttpStatus.OK);
-
     }
 
 }

@@ -1,7 +1,6 @@
 package DiceGame.model.domain;
 
 import java.util.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -21,20 +20,19 @@ public class Player {
 	@Id
 	private String id;
 
-	@NotBlank(message="El nombre del Jugador no puede estar vacío")
+	@NotBlank(message = "Name must be at least one character.")
 	private String name;
 
-	//Se usa e-mail como 'userName'
-	@Email(message = "El nombre de usuario debe ser formato e-mail. 'xx@mail.com'")
-	@NotBlank (message = "El nombre de usuario no puede estar vacío")
+	//e-mail as 'userName'
+	@Email(message = "Username must be an e-mail format. 'xx@mail.com'")
+	@NotBlank (message = "Username must be at least one character.")
 	private String userName;
 
 	@JsonIgnore
-	@NotBlank (message = "La contraseña no puede estar vacía")
+	@NotBlank (message = "Password must be at least one character.")
 	private String password;
 
 	private Date registDate;
-
 	private double winSuccess;
 	private int victories;
 	private List<Game> games;
@@ -50,28 +48,28 @@ public class Player {
 		victories = 0;
 		games = new ArrayList<Game>();
 		roles = Arrays.asList(
-				new Role(2L,ERole.ROLE_USER)); // role de USER por defecto
+				new Role(2L,ERole.ROLE_USER)); // User Role by default
 	}
 	
 
 	public void updateWinSuccess() {
 		setWinSuccess(winSuccessCalculator());
 	}
-	
+
 	public double winSuccessCalculator() {
-		int totalGames = games.size() + 1; //Se suma 1 para tomar en cuenta la partida actual
+		int totalGames = games.size() + 1;
 		double result = 0;
 		
 		if (totalGames >= 1) {
 			result = victories / (double) totalGames * 100;
 		}
-		return (double) Math.round(result * 10d) / 10d;
+		return Math.round(result * 10d) / 10d;
 	}
 	
 	public void resetPlayer() {
 		winSuccess = 0;
 		victories = 0;
-		games = new ArrayList<Game>();
+		games = new ArrayList<>();
 		
 	}
 

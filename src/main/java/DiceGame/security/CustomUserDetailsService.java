@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-//UserDetailService -> Administrador de credenciales de Usuario
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -20,7 +19,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Player user = userRepo.findByUserName(username).orElseThrow(()->
-                new UsernameNotFoundException("No se encontró un usuario con userName:" + username));
+                new UsernameNotFoundException("User not found with username: " + username));
 
         return new CustomUserDetails(user);
     }

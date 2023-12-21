@@ -17,7 +17,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Slf4j
-public class JwtSecurityFilter extends OncePerRequestFilter { // Garantiza solo UNA ejecución por request
+public class JwtSecurityFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtUtils jwtUtils;
@@ -28,26 +28,13 @@ public class JwtSecurityFilter extends OncePerRequestFilter { // Garantiza solo 
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-
         try {
             String jwtToken = getJwtTokenFromRequest(request);
-            //Si el request tiene un token válido actualiza el Authentication Context con los datos del Usuario
-            if (jwtToken != null && jwtUtils.validateToken(jwtToken)) {
-                String username = jwtUtils.getUsernameFromJWT(jwtToken);
-                UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
-                //Objeto que contiene Información adicional sobre la request (IP, URL, etc)
-                WebAuthenticationDetails webAuthenticationDetails =
-                        new WebAuthenticationDetailsSource().buildDetails(request);
-                //Se pasan los detalles de usuario para autenticación
-                UsernamePasswordAuthenticationToken authenticationToken =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                //Se agrega la info adicional
-                authenticationToken.setDetails(webAuthenticationDetails);
-                //Actualiza SecurityContextHolder con datos de autenticación
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            if (isTokenValid(jwtToken)) {
+                authenticateUser(request, jwtToken);
             }
         } catch (Exception e) {
-            log.error("No se pudo autenticar el usuario. {}", e.getMessage());
+            log.error("User cannot be authenticated. {}", e.getMessage());
         }
         filterChain.doFilter(request, response);
     }
@@ -58,6 +45,31 @@ public class JwtSecurityFilter extends OncePerRequestFilter { // Garantiza solo 
             return header.substring(7);
         }
         return null;
+    }
+
+    private boolean isTokenValid(String jwtToken) {
+        return jwtToken != null && jwtUtils.validateToken(jwtToken);
+    }
+
+    private UserDetails getUserDetails(String jwtToken) {
+        String username = jwtUtils.getUsernameFromJWT(jwtToken);
+        return customUserDetailsService.loadUserByUsername(username);
+    }
+
+    private void authenticateUser(HttpServletRequest request, String jwtToken) {
+        UserDetails userDetails = getUserDetails(jwtToken);
+        WebAuthenticationDetails webAuthenticationDetails = new WebAuthenticationDetailsSource().buildDetails(request);
+        UsernamePasswordAuthenticationToken authenticationToken = buildAuthenticationToken(userDetails);
+        authenticationToken.setDetails(webAuthenticationDetails);
+        setAuthenticationInSecurityContext(authenticationToken);
+    }
+
+    private UsernamePasswordAuthenticationToken buildAuthenticationToken(UserDetails userDetails) {
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+    }
+
+    private void setAuthenticationInSecurityContext(UsernamePasswordAuthenticationToken authenticationToken) {
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
 
 }
