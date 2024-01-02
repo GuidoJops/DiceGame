@@ -19,6 +19,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @ExtendWith(MockitoExtension.class)
@@ -48,7 +49,7 @@ class AuthServiceImplTest {
                 .id("id")
                 .name(authLoginRequest.getName())
                 .userName(authLoginRequest.getUserName())
-                .registDate(new Date())
+                .registrationDate(LocalDateTime.now())
                 .winSuccess(0)
                 .build();
 

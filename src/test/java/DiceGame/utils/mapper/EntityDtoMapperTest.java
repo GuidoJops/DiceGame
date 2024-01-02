@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -29,7 +30,7 @@ class EntityDtoMapperTest {
                 .name("testName")
                 .userName("test@gmail.com")
                 .password("testpswd")
-                .registDate(new Date())
+                .registrationDate(LocalDateTime.now())
                 .winSuccess(33)
                 .victories(1)
                 .games(Arrays.asList(new Game()))

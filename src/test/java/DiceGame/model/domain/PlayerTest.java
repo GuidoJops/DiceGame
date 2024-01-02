@@ -32,8 +32,8 @@ class PlayerTest {
     void shouldCalculateWinSuccess(){
         //given
         List<Game> games = Arrays.asList(
-                new Game(1,3,false),
-                new Game(6,1,true)
+                new Game(),
+                new Game()
                 //Total 3 Games. Uno lo tiene en cuenta el método por default
         );
 

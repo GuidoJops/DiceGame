@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import DiceGame.model.dto.GameDto;
 import DiceGame.services.IPlayerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,8 +40,8 @@ public class PlayerController {
 
 	@PreAuthorize("#id == principal.id or hasRole('ADMIN')")
 	@GetMapping("/{id}/games")
-	public ResponseEntity<List <Game>> getPlayerGames(@PathVariable String id) {
-		List <Game> games =	playerService.getGamesByPlayerId(id);
+	public ResponseEntity<List <GameDto>> getPlayerGames(@PathVariable String id) {
+		List <GameDto> games =	playerService.getGamesByPlayerId(id);
 		if (games.isEmpty()) {
 			log.info("No games for player with id: " + id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

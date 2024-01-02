@@ -1,8 +1,7 @@
 package DiceGame.model.dto;
 
 
-import java.util.Date;
-
+import java.time.LocalDateTime;
 import lombok.*;
 
 @Getter 
@@ -16,7 +15,7 @@ public class PlayerDto {
 	private String id;
 	private String name;
 	private String userName; // E-mail
-	private Date registDate;
+	private LocalDateTime registrationDate;
 	private double winSuccess;
 
 }

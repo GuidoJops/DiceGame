@@ -26,28 +26,21 @@ public class Runner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-/*
-* --Se agregan los Roles y un Usuario Admin la primera vez que se ejecuta el programa--
-*/
-        if(roleRepo.count() == 0){
+        //Roles and an Admin User are added the first time the program runs
+        if (roleRepo.count() == 0) {
             roleRepo.saveAll(List.of(
-                    new Role(1L,ERole.ROLE_ADMIN),
-                    new Role(2L,ERole.ROLE_USER)
-
+                    new Role(1L, ERole.ROLE_ADMIN),
+                    new Role(2L, ERole.ROLE_USER)
             ));
-            log.info("Roles USER y ADMIN creados.");
+            log.info("USER and ADMIN roles created.");
         }
-
         if (playerRepo.count() == 0) {
-
             Player adminPlayer = new Player("DEFAULT-ADMIN",
                     "admin@admin.com",
                     passwordEncoder.encode("admin"));
             adminPlayer.setRoles(roleRepo.findAll());
             playerRepo.save(adminPlayer);
-            log.info("Usuario 'admin' creado.");
+            log.info("'admin' user created.");
         }
-
-
     }
 }

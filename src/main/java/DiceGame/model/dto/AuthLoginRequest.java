@@ -13,7 +13,7 @@ public class AuthLoginRequest {
 
     private String name = "NoNamePlayer"; // Default name
 
-    @Email(message = "Username must be an e-mail format. 'xx@mail.com'")
+    @Email(message = "Username must be an e-mail format. 'xx@mail.com.'")
     @NotBlank (message = "Username must be at least one character.")
     private String userName;
 

@@ -3,6 +3,7 @@ package DiceGame.services.impl;
 import java.util.*;
 import java.util.function.Predicate;
 
+import DiceGame.model.dto.GameDto;
 import DiceGame.model.exceptions.PlayerNotFoundException;
 import DiceGame.repository.IPlayerRepository;
 import DiceGame.repository.IRoleRepository;
@@ -55,9 +56,11 @@ public class PlayerServiceImpl implements IPlayerService {
 	}
 
 	@Override
-	public List<Game> getGamesByPlayerId (String id){
+	public List<GameDto> getGamesByPlayerId (String id){
 		Player player = getPlayerById(id);
-		return player.getGames();
+		return player.getGames().stream()
+				.map(entityDtoMapper::toGameDto)
+				.toList();
 	}
 
 	@Override

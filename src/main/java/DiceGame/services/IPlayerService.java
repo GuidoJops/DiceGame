@@ -7,13 +7,14 @@ import java.util.Optional;
 import DiceGame.model.domain.Game;
 import DiceGame.model.domain.Player;
 import DiceGame.model.dto.AuthLoginRequest;
+import DiceGame.model.dto.GameDto;
 import DiceGame.model.dto.PlayerDto;
 
 public interface IPlayerService {
 	List<PlayerDto> getAllPlayers();
 	PlayerDto createPlayer(AuthLoginRequest authLoginRequest);
 	Map<String, Double> getAllPlayersRanking();
-	List<Game> getGamesByPlayerId(String id);
+	List<GameDto> getGamesByPlayerId(String id);
 	Optional<PlayerDto> getWinnerOrLoserPlayer(boolean isWinner);
 	boolean playerExist(String userName);
 	PlayerDto changePlayerName(String id, String Name);

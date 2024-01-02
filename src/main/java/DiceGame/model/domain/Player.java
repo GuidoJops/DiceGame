@@ -1,5 +1,6 @@
 package DiceGame.model.domain;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.Email;
@@ -24,7 +25,7 @@ public class Player {
 	private String name;
 
 	//e-mail as 'userName'
-	@Email(message = "Username must be an e-mail format. 'xx@mail.com'")
+	@Email(message = "Username must be an e-mail format. 'xx@mail.com'.")
 	@NotBlank (message = "Username must be at least one character.")
 	private String userName;
 
@@ -32,7 +33,7 @@ public class Player {
 	@NotBlank (message = "Password must be at least one character.")
 	private String password;
 
-	private Date registDate;
+	private LocalDateTime registrationDate;
 	private double winSuccess;
 	private int victories;
 	private List<Game> games;
@@ -43,10 +44,10 @@ public class Player {
 		this.name = name;
 		this.userName = userName;
 		this.password = password;
-		registDate = new Date();
+		registrationDate = LocalDateTime.now();
 		winSuccess = 0;
 		victories = 0;
-		games = new ArrayList<Game>();
+		games = new ArrayList<>();
 		roles = Arrays.asList(
 				new Role(2L,ERole.ROLE_USER)); // User Role by default
 	}
