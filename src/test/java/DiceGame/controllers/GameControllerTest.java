@@ -1,7 +1,6 @@
 package DiceGame.controllers;
 
 import DiceGame.model.dto.GameDto;
-import DiceGame.model.exceptions.PlayerNotFoundException;
 import DiceGame.services.IGameService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
