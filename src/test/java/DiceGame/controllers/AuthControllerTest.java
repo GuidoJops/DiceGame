@@ -2,7 +2,6 @@ package DiceGame.controllers;
 
 import DiceGame.model.dto.AuthLoginRequest;
 import DiceGame.model.dto.LoginResponse;
-import DiceGame.model.exceptions.UserNameDuplicatedException;
 import DiceGame.services.IAuthService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -52,8 +50,8 @@ class AuthControllerTest {
         doNothing().when(authService).registerUser(any(AuthLoginRequest.class));
 
         mockMvc.perform(post("/auth/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(authLoginRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(authLoginRequest)))
                 .andExpect(content().string("Successfully registered"))
                 .andExpect(status().isCreated());
 
@@ -71,8 +69,8 @@ class AuthControllerTest {
         when(authService.loginUser(any(AuthLoginRequest.class))).thenReturn(loginResponse);
 
         mockMvc.perform((post("/auth/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(authLoginRequest))))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(authLoginRequest))))
                 .andExpect(jsonPath("$.username").value(loginResponse.getUsername()))
                 .andExpect(jsonPath("$.token").value(loginResponse.getToken()))
                 .andExpect(status().isOk());
