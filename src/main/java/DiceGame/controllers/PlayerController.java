@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import DiceGame.model.domain.Game;
 import DiceGame.model.dto.PlayerDto;
 import lombok.extern.slf4j.Slf4j;
 
@@ -95,7 +94,7 @@ public class PlayerController {
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<PlayerDto> addAdminRoleToUser(@RequestParam String id) {
 		PlayerDto playerDto = playerService.addAdminRole(id);
-		log.info("Admin Role added to user {} ", playerDto.getUserName());
+		log.info("Admin Role added to user {} ", playerDto.getUsername());
 		return new ResponseEntity<>(playerDto, HttpStatus.OK);
 	}
 

@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
 
 @SpringBootTest
 class EntityDtoMapperTest {
@@ -42,7 +41,7 @@ class EntityDtoMapperTest {
 
         //then
         Assertions.assertThat(result.getName()).isEqualTo(player.getName());
-        Assertions.assertThat(result.getUserName()).isEqualTo(player.getUserName());
+        Assertions.assertThat(result.getUsername()).isEqualTo(player.getUserName());
         Assertions.assertThat(result.getWinSuccess()).isEqualTo(player.getWinSuccess());
     }
 

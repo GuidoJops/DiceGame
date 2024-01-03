@@ -15,7 +15,6 @@ import DiceGame.model.dto.AuthLoginRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import DiceGame.model.domain.Game;
 import DiceGame.model.domain.Player;
 import DiceGame.model.dto.PlayerDto;
 
@@ -42,7 +41,7 @@ public class PlayerServiceImpl implements IPlayerService {
 
 	@Override
 	public PlayerDto createPlayer(AuthLoginRequest authLoginRequest) {
-		Player player = new Player(authLoginRequest.getName(), authLoginRequest.getUserName(),
+		Player player = new Player(authLoginRequest.getName(), authLoginRequest.getUsername(),
 				passwordEncoder.encode(authLoginRequest.getPassword()));
 		log.info("Player '{}' created", player.getUserName());
 		return entityDtoMapper.toPlayerDto(savePlayer(player));

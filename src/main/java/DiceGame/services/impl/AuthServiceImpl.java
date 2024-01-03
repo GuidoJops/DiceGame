@@ -1,7 +1,6 @@
 package DiceGame.services.impl;
 
 import DiceGame.model.dto.LoginResponse;
-import DiceGame.model.dto.PlayerDto;
 import DiceGame.model.exceptions.UserNameDuplicatedException;
 import DiceGame.services.IAuthService;
 import DiceGame.services.IPlayerService;
@@ -11,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -30,12 +28,12 @@ public class AuthServiceImpl implements IAuthService {
     }
 
     @Override
-    public PlayerDto registerUser(AuthLoginRequest authLoginRequest) throws UserNameDuplicatedException {
-        if (playerService.playerExist(authLoginRequest.getUserName())) {
+    public void registerUser(AuthLoginRequest authLoginRequest) throws UserNameDuplicatedException {
+        if (playerService.playerExist(authLoginRequest.getUsername())) {
             throw new UserNameDuplicatedException("Username already taken.");
         }
-        log.info("User '{}' registered", authLoginRequest.getUserName());
-        return playerService.createPlayer(authLoginRequest);
+        log.info("User '{}' registered", authLoginRequest.getUsername());
+        playerService.createPlayer(authLoginRequest);
     }
 
     @Override
@@ -45,16 +43,16 @@ public class AuthServiceImpl implements IAuthService {
         String token = jwtUtils.generateToken(auth);
 
         LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setUserName(authLoginRequest.getUserName());
+        loginResponse.setUsername(authLoginRequest.getUsername());
         loginResponse.setToken(token);
 
-        log.info("User '{}' logged in.", authLoginRequest.getUserName());
+        log.info("User '{}' logged in.", authLoginRequest.getUsername());
         return loginResponse;
     }
 
     private Authentication getAuthentication(AuthLoginRequest authLoginRequest) {
         return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-               authLoginRequest.getUserName(),
+               authLoginRequest.getUsername(),
                authLoginRequest.getPassword()
         ));
     }

@@ -14,7 +14,7 @@ public class PlayerDto {
 	
 	private String id;
 	private String name;
-	private String userName; // E-mail
+	private String username; // E-mail
 	private LocalDateTime registrationDate;
 	private double winSuccess;
 

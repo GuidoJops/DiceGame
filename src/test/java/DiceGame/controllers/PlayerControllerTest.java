@@ -67,7 +67,7 @@ class PlayerControllerTest {
         playerDto1 = PlayerDto.builder()
                 .id("id1")
                 .name("player1")
-                .userName("player1@mail.com")
+                .username("player1@mail.com")
                 .registrationDate(LocalDateTime.now())
                 .winSuccess(100.0)
                 .build();
@@ -75,7 +75,7 @@ class PlayerControllerTest {
         playerDto2 = PlayerDto.builder()
                 .id("id2")
                 .name("player2")
-                .userName("player2@mail.com")
+                .username("player2@mail.com")
                 .registrationDate(LocalDateTime.now())
                 .winSuccess(0)
                 .build();

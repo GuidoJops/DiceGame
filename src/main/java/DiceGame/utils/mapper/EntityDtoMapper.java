@@ -15,7 +15,7 @@ public class EntityDtoMapper {
 
 		playerDto.setId(player.getId());
 		playerDto.setName(player.getName());
-		playerDto.setUserName(player.getUserName());
+		playerDto.setUsername(player.getUserName());
 		playerDto.setRegistrationDate(player.getRegistrationDate());
 		playerDto.setWinSuccess(player.getWinSuccess());
 

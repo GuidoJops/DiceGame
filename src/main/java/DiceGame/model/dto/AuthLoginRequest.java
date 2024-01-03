@@ -15,7 +15,7 @@ public class AuthLoginRequest {
 
     @Email(message = "Username must be an e-mail format. 'xx@mail.com.'")
     @NotBlank (message = "Username must be at least one character.")
-    private String userName;
+    private String username;
 
     @NotBlank (message = "Password must be at least one character.")
     private String password;

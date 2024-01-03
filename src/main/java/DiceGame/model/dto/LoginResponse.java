@@ -1,13 +1,15 @@
 package DiceGame.model.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class LoginResponse {
 
-    private String userName;
+    private String username;
     private String token;
 
 }
