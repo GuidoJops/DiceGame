@@ -1,6 +1,5 @@
 package DiceGame.model.domain;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,6 +7,9 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 @DataMongoTest
 @ExtendWith(SpringExtension.class)
@@ -28,17 +30,17 @@ class PlayerTest {
     void shouldResetPlayer() {
         player.resetPlayer();
 
-        Assertions.assertThat(player.getWinSuccess()).isZero();
-        Assertions.assertThat(player.getVictories()).isZero();
-        Assertions.assertThat(player.getGames()).isEmpty();
+        assertThat(player.getWinSuccess()).isZero();
+        assertThat(player.getVictories()).isZero();
+        assertThat(player.getGames()).isEmpty();
 
     }
 
     @Test
-    void shouldCalculateWinSuccess(){
+    void shouldCalculateWinSuccess() {
         double winSuccess = player.winSuccessCalculator();
 
-        Assertions.assertThat(winSuccess).isEqualTo(player.getWinSuccess());
+        assertThat(winSuccess).isEqualTo(player.getWinSuccess());
     }
 
 }
