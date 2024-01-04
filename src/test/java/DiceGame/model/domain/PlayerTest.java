@@ -1,52 +1,44 @@
 package DiceGame.model.domain;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Arrays;
 import java.util.List;
 
-@SpringBootTest
+@DataMongoTest
+@ExtendWith(SpringExtension.class)
 class PlayerTest {
 
-     @Test
-    void shouldResetPlayer() {
-        //given
-        Player player = Player.builder()
-                .winSuccess(6)
-                .victories(3)
-                .games(Arrays.asList(new Game()))
+    private Player player;
+
+    @BeforeEach
+    void setUp() {
+        player = Player.builder()
+                .winSuccess(50.0)
+                .victories(2)
+                .games(List.of(new Game(), new Game(), new Game(), new Game())) //4 games
                 .build();
-        //when
+    }
+
+    @Test
+    void shouldResetPlayer() {
         player.resetPlayer();
 
-        //then
-        Assertions.assertThat(player.getWinSuccess()).isEqualTo(0);
-        Assertions.assertThat(player.getVictories()).isEqualTo(0);
-        Assertions.assertThat(player.getGames().size()).isEqualTo(0);
+        Assertions.assertThat(player.getWinSuccess()).isZero();
+        Assertions.assertThat(player.getVictories()).isZero();
+        Assertions.assertThat(player.getGames()).isEmpty();
 
     }
 
     @Test
     void shouldCalculateWinSuccess(){
-        //given
-        List<Game> games = Arrays.asList(
-                new Game(),
-                new Game()
-                //Total 3 Games. Uno lo tiene en cuenta el método por default
-        );
+        double winSuccess = player.winSuccessCalculator();
 
-        Player player = Player.builder()
-                .victories(1)
-                .games(games)
-                .build();
-
-        //when
-        double result = player.winSuccessCalculator();
-
-        //then
-        Assertions.assertThat(result).isEqualTo(33.3);
+        Assertions.assertThat(winSuccess).isEqualTo(player.getWinSuccess());
     }
 
 }

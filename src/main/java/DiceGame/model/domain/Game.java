@@ -3,7 +3,7 @@ package DiceGame.model.domain;
 
 import lombok.*;
 
-@Getter 
+@Getter
 @Setter
 @ToString
 public class Game {

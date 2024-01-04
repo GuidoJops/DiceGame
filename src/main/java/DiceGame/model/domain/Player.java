@@ -58,7 +58,7 @@ public class Player {
 	}
 
 	public double winSuccessCalculator() {
-		int totalGames = games.size() + 1;
+		int totalGames = games.size();
 		double result = 0;
 		
 		if (totalGames >= 1) {
