@@ -18,8 +18,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataMongoTest
 @ExtendWith(SpringExtension.class)
-@AutoConfigureDataMongo
-@DirtiesContext
 class PlayerRepositoryTest {
 
     @Autowired
